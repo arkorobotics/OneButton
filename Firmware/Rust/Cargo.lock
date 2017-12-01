@@ -9,6 +9,14 @@ version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "bluepill-usbhid"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "gcc 0.3.54 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "cortex-m"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -28,6 +36,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "gcc"
+version = "0.3.54"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "numtoa"
 version = "0.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -37,6 +50,7 @@ name = "onebutton"
 version = "0.1.0"
 dependencies = [
  "bare-metal 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bluepill-usbhid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m-rt 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "numtoa 0.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -71,8 +85,10 @@ dependencies = [
 [metadata]
 "checksum aligned 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "d1a92995cea48691c7c93e12597cca4d692bb3130d0a291c7141b9793c7829e7"
 "checksum bare-metal 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "aacbba24771a81cfe18f5aedd5bf3208ca8324ecdd9344ddb61f8d2a051a4574"
+"checksum bluepill-usbhid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "a48608273947cd8e848a55216234a9d9518828b4d5f9636e8a3e77eb5d54bae5"
 "checksum cortex-m 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "4d553ca1f23403c81e6d3d28a64ef6e8eadd7f395195aacda65cbc0dc987738e"
 "checksum cortex-m-rt 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)" = "3cfc98f3868181fc5d91eb973a45b7cbf378dc8ae7d98766123d759d78979af6"
+"checksum gcc 0.3.54 (registry+https://github.com/rust-lang/crates.io-index)" = "5e33ec290da0d127825013597dbdfc28bee4964690c7ce1166cbc2a7bd08b1bb"
 "checksum numtoa 0.0.7 (registry+https://github.com/rust-lang/crates.io-index)" = "5c8fcb09df1eba2d128cfc50bdb0c3f33ac4f91fdacc2d3ac039b3b192398f8f"
 "checksum r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e2a38df5b15c8d5c7e8654189744d8e396bddc18ad48041a500ce52d6948941f"
 "checksum static-ref 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "993fc46a615b7f80fd55f5f3a45b3c5c3a3c479c5906d92a4cf33e1ed53d424a"

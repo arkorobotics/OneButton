@@ -1,5 +1,5 @@
 [package]
-authors = ["Arko"]
+authors = ["Arko <arko2600@gmail.com>"]
 categories = [
     "embedded",
     "no-std",
@@ -19,6 +19,7 @@ numtoa = "0.0.7"
 static-ref = "0.2.1"
 vcell = "0.1.0"
 volatile-register = "0.2.0"
+bluepill-usbhid = "0.1.0"
 
 [dependencies.cortex-m-rt]
 features = ["abort-on-panic"]
