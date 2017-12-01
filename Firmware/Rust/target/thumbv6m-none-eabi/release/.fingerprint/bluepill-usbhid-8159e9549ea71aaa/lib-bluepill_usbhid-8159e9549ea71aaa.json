@@ -1,1 +1,0 @@
-{"rustc":1148597035603722035,"features":"[]","target":12848746152974636244,"profile":12744285873188914092,"deps":[],"local":[{"Precalculated":"0.1.0"}],"rustflags":["-C","link-arg=-Tlink.x","-C","linker=arm-none-eabi-ld","-Z","linker-flavor=ld","--emit=asm","--sysroot","/Users/arko/.xargo"]}
