@@ -5,7 +5,8 @@
 1. Download and install the arm-none-eabi gcc toolchain
 
 https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
-We recommend installing the precompiled binaries to '/usr/local' 
+We recommend installing the precompiled binaries to '/usr/local'. 
+Add the bin folders (/bin & /arm-none-eabi/bin) to your environments variable 'PATH'.
 
 2. Install STLink Tool
 
