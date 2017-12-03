@@ -25,4 +25,4 @@ https://github.com/texane/stlink
 
 ## Credits
 
-Base toolchain: https://github.com/fduignan/NucleoF042_DMAandSPItoWS2812Bs
+Base library:  http://ebrombaugh.studionebula.com/embedded/stm32f042breakout/index.html

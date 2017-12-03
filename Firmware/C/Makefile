@@ -1,37 +1,73 @@
-# User Defined Variables - library path for ARMV6
-LIBSPEC=-L ~/Documents/ARM_GCC/gcc-arm-none-eabi-6-2017-q2/lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m
+# Makefile for STM32F042
+# 06-10-2015 E. Brombaugh
 
-CC=arm-none-eabi-gcc
+# sub directories
+VPATH = .:CMSIS:StdPeriph:USB
 
-AS=arm-none-eabi-as
+# Object files
+OBJECTS =	startup_stm32f042.o system_stm32f0xx.o main.o systick.o \
+			stm32_it.o usb_bsp.o usbd_cdc_vcp.o usbd_desc.o usbd_pwr.o \
+			usbd_usr.o \
+			f042_bob.o \
+			usb_core.o usb_dcd.o usb_dcd_int.o usbd_core.o usbd_ioreq.o \
+			usbd_req.o usbd_cdc_core.o \
+			stm32f0xx_crs.o stm32f0xx_dma.o stm32f0xx_exti.o stm32f0xx_flash.o \
+			stm32f0xx_gpio.o stm32f0xx_misc.o stm32f0xx_pwr.o stm32f0xx_rcc.o \
+			stm32f0xx_syscfg.o stm32f0xx_usart.o
 
-LD=arm-none-eabi-ld
+# Must define the MCU type
+CDEFS=-DSTM32F042 -DUSE_STDPERIPH_DRIVER
 
-CCFLAGS=-mcpu=cortex-m0 -mthumb -g 
+# Linker script
+LDSCRIPT = STM32F042C6_FLASH.ld
 
-OBJS=	init.o \
-		serial.o \
-		spi.o \
-		main.o 
+# Compiler Flags
+OPTLVL:=s # Optimization level, can be [0, 1, 2, 3, s].
+COMMONFLAGS=-O$(OPTLVL) -g -ffunction-sections -std=c99 -Wall
+MCUFLAGS=-mthumb -mcpu=cortex-m0
+CFLAGS=$(COMMONFLAGS) $(MCUFLAGS) -I. -ICMSIS -IStdPeriph -IUSB $(CDEFS)
+LDFLAGS=$(COMMONFLAGS) $(MCUFLAGS) -fno-exceptions \
+	-fdata-sections -nostartfiles -Wl,--gc-sections,-T$(LDSCRIPT),-Map=main.map
 
-main.elf : $(OBJS)
-	$(LD) $(OBJS) $(LIBSPEC) -lgcc -T linker_script.ld --cref -Map main.map -nostartfiles -o main.elf
+# Executables
+ARCH = arm-none-eabi
+CC = $(ARCH)-gcc
+LD = $(ARCH)-ld -v
+AS = $(ARCH)-as
+OBJCPY = $(ARCH)-objcopy
+OBJDMP = $(ARCH)-objdump
+GDB = $(ARCH)-gdb
+OPENOCD = openocd
+
+CPFLAGS = --output-target=binary
+ODFLAGS	= -x --syms
+
+# Targets
+all: main.bin
+
+clean:
+	-rm -f $(OBJECTS) *.lst *.elf *.bin *.dmp *.map
+
+flash: main.elf
+	$(OPENOCD) -f openocd.cfg -c flash_chip
+
+disassemble: main.elf
+	$(OBJDMP) -d main.elf > main.dis
 	
-	# Generate hex file for flashing stm32
-	objcopy -O ihex main.elf main.hex
+dist:
+	tar -c *.h *.c *.s Makefile *.cmd *.cfg openocd_doflash | gzip > minimal_hello_world.tar.gz
 
-main.o: main.c
-	$(CC) -c $(CCFLAGS) main.c -o main.o
-	
-init.o: init.c
-	$(CC) -c $(CCFLAGS) init.c -o init.o
+main.ihex: main.elf
+	$(OBJCPY) --output-target=ihex main.elf main.ihex
 
-serial.o: serial.c
-	$(CC) -c $(CCFLAGS) serial.c -o serial.o
-	
-spi.o: spi.c
-	$(CC) -c $(CCFLAGS) spi.c -o spi.o	
-	
-clean: 
-	rm $(OBJS) 
-	rm main.elf 
+main.bin: main.elf 
+	$(OBJCPY) $(CPFLAGS) main.elf main.bin
+	$(OBJDMP) $(ODFLAGS) main.elf > main.dmp
+	ls -l main.elf main.bin
+
+main.elf: $(OBJECTS) $(LDSCRIPT)
+	$(CC) -o main.elf $(LDFLAGS) $(OBJECTS) -lnosys
+
+%.o: %.c %.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
