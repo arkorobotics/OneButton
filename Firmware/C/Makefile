@@ -1,16 +1,13 @@
 # Makefile for STM32F042
 # 06-10-2015 E. Brombaugh
+# 12-03-2017 A. Kourchians
 
 # sub directories
 VPATH = .:CMSIS:StdPeriph:USB
 
 # Object files
 OBJECTS =	startup_stm32f042.o system_stm32f0xx.o main.o systick.o \
-			stm32_it.o usb_bsp.o usbd_cdc_vcp.o usbd_desc.o usbd_pwr.o \
-			usbd_usr.o \
-			f042_bob.o \
-			usb_core.o usb_dcd.o usb_dcd_int.o usbd_core.o usbd_ioreq.o \
-			usbd_req.o usbd_cdc_core.o \
+			stm32_it.o \
 			stm32f0xx_crs.o stm32f0xx_dma.o stm32f0xx_exti.o stm32f0xx_flash.o \
 			stm32f0xx_gpio.o stm32f0xx_misc.o stm32f0xx_pwr.o stm32f0xx_rcc.o \
 			stm32f0xx_syscfg.o stm32f0xx_usart.o
@@ -62,8 +59,9 @@ main.ihex: main.elf
 
 main.bin: main.elf 
 	$(OBJCPY) $(CPFLAGS) main.elf main.bin
+	$(OBJCPY) $(CPFLAGS) main.elf main.hex
 	$(OBJDMP) $(ODFLAGS) main.elf > main.dmp
-	ls -l main.elf main.bin
+	ls -l main.elf main.bin main.hex
 
 main.elf: $(OBJECTS) $(LDSCRIPT)
 	$(CC) -o main.elf $(LDFLAGS) $(OBJECTS) -lnosys

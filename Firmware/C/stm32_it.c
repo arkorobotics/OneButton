@@ -100,7 +100,7 @@ void PendSV_Handler(void)
   */
 void USB_IRQHandler(void)
 {
-  USB_Istr();
+  //USB_Istr();
 }
 
 /******************************************************************************/
