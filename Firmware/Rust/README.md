@@ -38,6 +38,13 @@ https://github.com/texane/stlink
 
 `$ xargo build --release`
 
+## Flash
+
+1. Generate Hex File
+`arm-none-eabi-objcopy -O ihex target/thumbv6m-none-eabi/release/onebutton onebutton.ihex`
+
+2. Flash command
+`st-flash --format ihex write onebutton.ihex`
 
 ## Credits
 
