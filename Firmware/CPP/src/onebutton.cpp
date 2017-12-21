@@ -1,40 +1,13 @@
 /*
- * This file is a part of the open source stm32plus library.
- * Copyright (c) 2011,2012,2013,2014 Andy Brown <www.andybrown.me.uk>
- * Please see website for licensing terms.
- */
+One Button
+*/
 
 #include "config/stm32plus.h"
 #include "config/usb/device/device.h"
 #include "config/timing.h"
 
-
 using namespace stm32plus;
 
-
-/**
- * This example demonstrates a custom 'Human Interface Device' (HID). Two neat things about
- * HID devices is that they don't need drivers on the host OS and there's no requirement for
- * them to interface with anything human at all. You can simply use them as useful bi-directional
- * interrupt driven communications channel if you want, and that's what we'll do in this
- * example.
- *
- * As long as there are no errors then this device will send an 11-byte report to the host
- * every second. The 11-bytes are, predictably, "Hello World". It will also listen for a 9-byte
- * report from the host. If it receives these 9 bytes: "stm32plus" then it will light a LED
- * on PB1 for 500ms. Change the LED port to something different if you have a board with
- * a LED on a different pin.
- *
- * Important! The SetSysClock() function in system/f042_48_8/System.c has been modified to set
- * up the system clock from the HSI48 USB clock and to trim it from SOF frames received from
- * the host. It also remaps PA11 and PA12 to PA9-10 for use by USB.
- *
- * Compatible MCU:
- *   STM32F0
- *
- * Tested on devices:
- *   STM32F042F6P6
- */
 
 class UsbDeviceCustomHid {
 
@@ -82,7 +55,7 @@ class UsbDeviceCustomHid {
          * The number of milliamps that our device will use. The maximum you can specify is 510.
          */
 
-        MILLIAMPS = 100,
+        MILLIAMPS = 500,
 
         /*
          * Additional configuration flags for the device. The available options that can be
@@ -96,7 +69,7 @@ class UsbDeviceCustomHid {
          * The language identifier for our strings
          */
 
-        LANGUAGE_ID = 0x0809    // United Kingdom English.
+        LANGUAGE_ID = 0x0409    // US English.
       };
 
       /*
@@ -148,6 +121,7 @@ class UsbDeviceCustomHid {
        */
 
       UsbCustomHid<MyHidConfiguration> usb;
+
 
       /*
        * Subscribe to all the events
@@ -254,13 +228,13 @@ class UsbDeviceCustomHid {
 const uint8_t UsbDeviceCustomHid::MyHidConfiguration::ManufacturerString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::ManufacturerString)]={
   sizeof(UsbDeviceCustomHid::MyHidConfiguration::ManufacturerString),
   USB_DESC_TYPE_STRING,
-  'A',0,'R',0,'A',0,'A',0,'\'',0,'s',0,' ',0,'W',0,'o',0,'r',0,'k',0,'s',0,'h',0,'o',0,'p',0
+  'O',0,'N',0,'E',0,' ',0,'B',0,'U',0,'T',0,'T',0,'O',0,'N',0
 };
 
 const uint8_t UsbDeviceCustomHid::MyHidConfiguration::ProductString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::ProductString)]={
   sizeof(UsbDeviceCustomHid::MyHidConfiguration::ProductString),
   USB_DESC_TYPE_STRING,
-  'C',0,'u',0,'s',0,'t',0,'o',0,'m',0,' ',0,'H',0,'I',0,'D',0
+  'O',0,'N',0,'E',0,' ',0,'B',0,'U',0,'T',0,'T',0,'O',0,'N',0
 };
 
 const uint8_t UsbDeviceCustomHid::MyHidConfiguration::SerialString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::SerialString)]={
@@ -281,6 +255,40 @@ const uint8_t UsbDeviceCustomHid::MyHidConfiguration::InterfaceString[sizeof(Usb
   'i',0,'t',0,'f',0
 };
 
+const uint8_t KeyboardReportDescriptor[63] = {
+  0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+  0x09, 0x06,                    // USAGE (Keyboard)
+  0xa1, 0x01,                    // COLLECTION (Application)
+  0x75, 0x01,                    //   REPORT_SIZE (1)
+  0x95, 0x08,                    //   REPORT_COUNT (8)
+  0x05, 0x07,                    //   USAGE_PAGE (Keyboard)(Key Codes)
+  0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)(224)
+  0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)(231)
+  0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+  0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+  0x81, 0x02,                    //   INPUT (Data,Var,Abs) ; Modifier byte
+  0x95, 0x01,                    //   REPORT_COUNT (1)
+  0x75, 0x08,                    //   REPORT_SIZE (8)
+  0x81, 0x03,                    //   INPUT (Cnst,Var,Abs) ; Reserved byte
+  0x95, 0x05,                    //   REPORT_COUNT (5)
+  0x75, 0x01,                    //   REPORT_SIZE (1)
+  0x05, 0x08,                    //   USAGE_PAGE (LEDs)
+  0x19, 0x01,                    //   USAGE_MINIMUM (Num Lock)
+  0x29, 0x05,                    //   USAGE_MAXIMUM (Kana)
+  0x91, 0x02,                    //   OUTPUT (Data,Var,Abs) ; LED report
+  0x95, 0x01,                    //   REPORT_COUNT (1)
+  0x75, 0x03,                    //   REPORT_SIZE (3)
+  0x91, 0x03,                    //   OUTPUT (Cnst,Var,Abs) ; LED report padding
+  0x95, 0x06,                    //   REPORT_COUNT (6)
+  0x75, 0x08,                    //   REPORT_SIZE (8)
+  0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+  0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
+  0x05, 0x07,                    //   USAGE_PAGE (Keyboard)(Key Codes)
+  0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))(0)
+  0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)(101)
+  0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
+  0xc0                           // END_COLLECTION
+};
 
 /*
  * Main entry point

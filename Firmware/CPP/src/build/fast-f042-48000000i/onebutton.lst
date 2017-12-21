@@ -21,23 +21,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000028  00000000  00000000  0002084c  2**0
                   CONTENTS, READONLY
-  9 .debug_info   0001f97e  00000000  00000000  00020874  2**0
+  9 .debug_info   0001f9dc  00000000  00000000  00020874  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 00002924  00000000  00000000  000401f2  2**0
+ 10 .debug_abbrev 00002925  00000000  00000000  00040250  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000099bd  00000000  00000000  00042b16  2**0
+ 11 .debug_loc    000099bd  00000000  00000000  00042b75  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_aranges 000003b0  00000000  00000000  0004c4d3  2**0
+ 12 .debug_aranges 000003b0  00000000  00000000  0004c532  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00001b10  00000000  00000000  0004c883  2**0
+ 13 .debug_ranges 00001b10  00000000  00000000  0004c8e2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   000036d8  00000000  00000000  0004e393  2**0
+ 14 .debug_line   000036d6  00000000  00000000  0004e3f2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    00015ae0  00000000  00000000  00051a6b  2**0
+ 15 .debug_str    00015af9  00000000  00000000  00051ac8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000007f  00000000  00000000  0006754b  2**0
+ 16 .comment      0000007f  00000000  00000000  000675c1  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  00000bbc  00000000  00000000  000675cc  2**2
+ 17 .debug_frame  00000bbc  00000000  00000000  00067640  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -7062,7 +7062,7 @@ void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
  8002cfc:	08001a88 	.word	0x08001a88
 
 08002d00 <_ZN9stm32plus12UsbCustomHidIN18UsbDeviceCustomHid18MyHidConfigurationEJEE17_langIdDescriptorE>:
- 8002d00:	08090304                                ....
+ 8002d00:	04090304                                ....
 
 08002d04 <_ZN9stm32plus12UsbCustomHidIN18UsbDeviceCustomHid18MyHidConfigurationEJEE14_hidDescriptorE>:
  8002d04:	01112109 20220100 00000000              .!...." ....
@@ -7072,7 +7072,7 @@ void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
  8002d20:	8100090b 75028582 09099508 c0829100     .......u........
 
 08002d30 <_ZN9stm32plus12UsbCustomHidIN18UsbDeviceCustomHid18MyHidConfigurationEJEE24_configurationDescriptorE>:
- 8002d30:	00290209 80000101 00040932 00030200     ..).....2.......
+ 8002d30:	00290209 80000101 000409fa 00030200     ..).............
  8002d40:	21090000 01000111 07002022 0c038105     ...!...." ......
  8002d50:	05072000 000a0301 00000020              . ...... ...
 
@@ -7084,15 +7084,15 @@ void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
  8002d70:	0031030c 0030002e 0030002e              ..1...0...0.
 
 08002d7c <_ZN18UsbDeviceCustomHid18MyHidConfiguration13ProductStringE>:
- 8002d7c:	00430316 00730075 006f0074 0020006d     ..C.u.s.t.o.m. .
- 8002d8c:	00490048 00000044                       H.I.D...
+ 8002d7c:	004f0316 0045004e 00420020 00540055     ..O.N.E. .B.U.T.
+ 8002d8c:	004f0054 0000004e                       T.O.N...
 
 08002d94 <_ZN18UsbDeviceCustomHid18MyHidConfiguration15InterfaceStringE>:
  8002d94:	00690308 00660074                       ..i.t.f.
 
 08002d9c <_ZN18UsbDeviceCustomHid18MyHidConfiguration18ManufacturerStringE>:
- 8002d9c:	00410320 00410052 00270041 00200073      .A.R.A.A.'.s. .
- 8002dac:	006f0057 006b0072 00680073 0070006f     W.o.r.k.s.h.o.p.
+ 8002d9c:	004f0320 0045004e 00420020 00540055      .O.N.E. .B.U.T.
+ 8002dac:	004f0054 0000004e 00000000 00000000     T.O.N...........
 
 08002dbc <_ZN18UsbDeviceCustomHid18MyHidConfiguration19ConfigurationStringE>:
  8002dbc:	00630308 00670066 6c654801 57206f6c     ..c.f.g..Hello W

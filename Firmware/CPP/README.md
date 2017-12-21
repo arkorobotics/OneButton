@@ -16,19 +16,19 @@ https://github.com/texane/stlink
 
 `$ brew update openocd`
 
-#4. Install scons
+4. Install scons
 
-#`brew install scons`
+`brew install scons`
 
 ## Build
-
-1. Build command
-
-`$ make`
 
 1. Build with scons
 
 `scons mode=fast mcu=f042 hsi=48000000`
+
+## Flash Device
+
+`st-flash --format ihex write src/build/fast-f042-48000000i/onebutton.hex`
 
 ## Credits
 

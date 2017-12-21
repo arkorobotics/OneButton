@@ -1,6 +1,6 @@
 #
-# SConscript build file for an stm32plus example. Called automatically by the SConstruct
-# in the parent directory
+# SConscript build file for the One Button. 
+# Called automatically by the SConstruct in the parent directory
 #
 
 import os
