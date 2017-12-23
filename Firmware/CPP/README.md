@@ -30,6 +30,10 @@ https://github.com/texane/stlink
 
 `st-flash --format ihex write src/build/fast-f042-48000000i/onebutton.hex`
 
+## Check for USB HID Devices
+
+`system_profiler SPUSBDataType`
+
 ## Credits
 
 Base library:  https://github.com/andysworkshop/stm32plus
