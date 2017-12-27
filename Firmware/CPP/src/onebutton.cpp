@@ -1,5 +1,11 @@
 /*
 One Button
+----------
+
+By: Arko
+
+Base Libraries: Andy Brown - https://github.com/andysworkshop/stm32plus
+
 */
 
 #include "config/stm32plus.h"
@@ -36,8 +42,8 @@ class UsbDeviceCustomHid {
          * you can just do some research to find an unused VID and use it as you wish.
          */
 
-        VID = 0xF055,
-        PID = 0x7201,
+        VID = 0xDEAD,
+        PID = 0xCAFE,
 
         /*
          * IN and OUT are always with respect to the host. You as a device transmit on an IN
@@ -120,7 +126,7 @@ class UsbDeviceCustomHid {
        * power up the device yet.
        */
 
-      UsbCustomHid<MyHidConfiguration> usb;
+      UsbKeyboard<MyHidConfiguration> usb;
 
 
       /*

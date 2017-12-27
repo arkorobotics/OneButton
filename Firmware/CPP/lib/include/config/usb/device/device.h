@@ -32,6 +32,7 @@
   // device type includes
 
   #include "usb/f0/hid/UsbCustomHid.h"
+  #include "usb/f0/hid/UsbKeyboard.h"
 
 #elif defined(STM32PLUS_F4)
 
