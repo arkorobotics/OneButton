@@ -1,4 +1,5 @@
 /*
+
 One Button
 ----------
 
@@ -42,8 +43,8 @@ class UsbDeviceCustomHid {
          * you can just do some research to find an unused VID and use it as you wish.
          */
 
-        VID = 0xDEAD,
-        PID = 0xCAFE,
+        VID = 0xCAFE,
+        PID = 0xDEAD,
 
         /*
          * IN and OUT are always with respect to the host. You as a device transmit on an IN
@@ -54,8 +55,8 @@ class UsbDeviceCustomHid {
          * Report id #2 is for reports FROM the host (OUT direction)
          */
 
-        IN_ENDPOINT_MAX_PACKET_SIZE = 12,   // 1 byte report id + 11-byte report
-        OUT_ENDPOINT_MAX_PACKET_SIZE = 10,  // 1 byte report id + 9-byte report
+        IN_ENDPOINT_MAX_PACKET_SIZE = 9,   // 1 byte report id + 8-byte report
+        OUT_ENDPOINT_MAX_PACKET_SIZE = 2,  // 1 byte report id + 1-byte report
 
         /*
          * The number of milliamps that our device will use. The maximum you can specify is 510.
@@ -150,11 +151,6 @@ class UsbDeviceCustomHid {
 
       for(;;) {
 
-        // keep the LED lit if a report was received in the last 500ms
-
-        led[LED_PIN].setState(!MillisecondTimer::hasTimedOut(_receivedReportTime,500));
-
-
         // if we're configured and it's been a second since the last time
         // then send a report to the host
 
@@ -166,8 +162,9 @@ class UsbDeviceCustomHid {
 
           // note that the report data is always prefixed with the report ID, for the stm32plus
           // custom HID implementation report id #1 is for the IN direction (to host).
+          uint8_t usb_key_report[8] = {2, 0, 4, 0, 0, 0, 0, 0};
+          usb.sendReport(usb_key_report,8);
 
-          usb.sendReport("\x01Hello World",12);
           _lastTransmitTime=MillisecondTimer::millis();
         }
       }
@@ -183,7 +180,7 @@ class UsbDeviceCustomHid {
       // note that the report data is always prefixed with the report id, which is
       // 0x02 in the stm32plus custom HID implementation for reports OUT from the host
 
-      if(endpointIndex==1 && size==10 && memcmp(data,"\x02stm32plus",size)==0)
+      if(endpointIndex==1 && size==2 && memcmp(data,"\x02\x01",size)==0)
         _receivedReportTime=MillisecondTimer::millis();
     }
 
@@ -259,41 +256,6 @@ const uint8_t UsbDeviceCustomHid::MyHidConfiguration::InterfaceString[sizeof(Usb
   sizeof(UsbDeviceCustomHid::MyHidConfiguration::InterfaceString),
   USB_DESC_TYPE_STRING,
   'i',0,'t',0,'f',0
-};
-
-const uint8_t KeyboardReportDescriptor[63] = {
-  0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-  0x09, 0x06,                    // USAGE (Keyboard)
-  0xa1, 0x01,                    // COLLECTION (Application)
-  0x75, 0x01,                    //   REPORT_SIZE (1)
-  0x95, 0x08,                    //   REPORT_COUNT (8)
-  0x05, 0x07,                    //   USAGE_PAGE (Keyboard)(Key Codes)
-  0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)(224)
-  0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)(231)
-  0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-  0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
-  0x81, 0x02,                    //   INPUT (Data,Var,Abs) ; Modifier byte
-  0x95, 0x01,                    //   REPORT_COUNT (1)
-  0x75, 0x08,                    //   REPORT_SIZE (8)
-  0x81, 0x03,                    //   INPUT (Cnst,Var,Abs) ; Reserved byte
-  0x95, 0x05,                    //   REPORT_COUNT (5)
-  0x75, 0x01,                    //   REPORT_SIZE (1)
-  0x05, 0x08,                    //   USAGE_PAGE (LEDs)
-  0x19, 0x01,                    //   USAGE_MINIMUM (Num Lock)
-  0x29, 0x05,                    //   USAGE_MAXIMUM (Kana)
-  0x91, 0x02,                    //   OUTPUT (Data,Var,Abs) ; LED report
-  0x95, 0x01,                    //   REPORT_COUNT (1)
-  0x75, 0x03,                    //   REPORT_SIZE (3)
-  0x91, 0x03,                    //   OUTPUT (Cnst,Var,Abs) ; LED report padding
-  0x95, 0x06,                    //   REPORT_COUNT (6)
-  0x75, 0x08,                    //   REPORT_SIZE (8)
-  0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-  0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
-  0x05, 0x07,                    //   USAGE_PAGE (Keyboard)(Key Codes)
-  0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))(0)
-  0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)(101)
-  0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
-  0xc0                           // END_COLLECTION
 };
 
 /*

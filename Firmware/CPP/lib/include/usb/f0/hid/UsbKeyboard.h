@@ -1,8 +1,13 @@
 /*
- * This file is a part of the open source stm32plus library.
- * Copyright (c) 2011,2012,2013,2014 Andy Brown <www.andybrown.me.uk>
- * Please see website for licensing terms.
- */
+
+One Button - USB Keyboard
+-------------------------
+
+By: Arko
+
+Base Libraries: Andy Brown - https://github.com/andysworkshop/stm32plus
+
+*/
 
 #pragma once
 
@@ -68,7 +73,7 @@ namespace stm32plus {
 
       static const uint8_t _deviceDescriptor[18];
       static const uint8_t _configurationDescriptor[41];
-      static const uint8_t _reportDescriptor[32];
+      static const uint8_t _reportDescriptor[63];
       static const uint8_t _hidDescriptor[9];
       static const uint8_t _langIdDescriptor[4];
 
@@ -238,31 +243,39 @@ namespace stm32plus {
    */
 
   template<class TConfiguration,class... Features>
-  const uint8_t UsbKeyboard<TConfiguration,Features...>::_reportDescriptor[32] = {
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-    0x09, 0x00,                    // USAGE (Undefined)
-    0xa1, 0x01,                    // COLLECTION (Application)
-
-    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
-
-    // IN report
-
-    0x85, 0x01,                    //   REPORT_ID (1)
-    0x75, 0x08,                    //   REPORT_SIZE (8)
-    0x95, TConfiguration::IN_ENDPOINT_MAX_PACKET_SIZE-1, // REPORT_COUNT (this is the byte length)
-    0x09, 0x00,                    //   USAGE (Undefined)
-    0x81, 0x82,                    //   INPUT (Data,Var,Abs,Vol)
-
-    // OUT report
-
-    0x85, 0x02,                    //   REPORT_ID (2)
-    0x75, 0x08,                    //   REPORT_SIZE (8)
-    0x95, TConfiguration::OUT_ENDPOINT_MAX_PACKET_SIZE-1, // REPORT_COUNT (this is the byte length)
-    0x09, 0x00,                    //   USAGE (Undefined)
-    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
-
-    0xc0                           // END_COLLECTION
+  const uint8_t UsbKeyboard<TConfiguration,Features...>::_reportDescriptor[63] = {
+      0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+      0x09, 0x06,                    // USAGE (Keyboard)
+      0xa1, 0x01,                    // COLLECTION (Application)
+      0x75, 0x01,                    //   REPORT_SIZE (1)
+      0x95, 0x08,                    //   REPORT_COUNT (8)
+      0x05, 0x07,                    //   USAGE_PAGE (Keyboard)(Key Codes)
+      0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)(224)
+      0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)(231)
+      0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+      0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+      0x81, 0x02,                    //   INPUT (Data,Var,Abs) ; Modifier byte
+      0x95, 0x01,                    //   REPORT_COUNT (1)
+      0x75, 0x08,                    //   REPORT_SIZE (8)
+      0x81, 0x03,                    //   INPUT (Cnst,Var,Abs) ; Reserved byte
+      0x95, 0x05,                    //   REPORT_COUNT (5)
+      0x75, 0x01,                    //   REPORT_SIZE (1)
+      0x05, 0x08,                    //   USAGE_PAGE (LEDs)
+      0x19, 0x01,                    //   USAGE_MINIMUM (Num Lock)
+      0x29, 0x05,                    //   USAGE_MAXIMUM (Kana)
+      0x91, 0x02,                    //   OUTPUT (Data,Var,Abs) ; LED report
+      0x95, 0x01,                    //   REPORT_COUNT (1)
+      0x75, 0x03,                    //   REPORT_SIZE (3)
+      0x91, 0x03,                    //   OUTPUT (Cnst,Var,Abs) ; LED report padding
+      0x95, 0x06,                    //   REPORT_COUNT (6)
+      0x75, 0x08,                    //   REPORT_SIZE (8)
+      0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+      0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
+      0x05, 0x07,                    //   USAGE_PAGE (Keyboard)(Key Codes)
+      0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))(0)
+      0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)(101)
+      0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
+      0xc0                           // END_COLLECTION
   };
 
 
@@ -322,7 +335,7 @@ namespace stm32plus {
     0x02,                           // bNumEndpoints
     0x03,                           // bInterfaceClass: CUSTOM_HID
     0x00,                           // bInterfaceSubClass : 1=BOOT, 0=no boot
-    0x00,                           // nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse
+    0x01,                           // nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse
     0x00,                           // iInterface: Index of string descriptor
 
     // HID descriptor
@@ -343,7 +356,7 @@ namespace stm32plus {
     IN_ENDPOINT_ADDRESS,            // bEndpointAddress: Endpoint Address (IN)
     0x03,                           // bmAttributes: Interrupt endpoint
     TConfiguration::IN_ENDPOINT_MAX_PACKET_SIZE,0,  // wMaxPacketSize: 2 Byte max
-    0x20,                           // bInterval: Polling Interval (20 ms)
+    0x0A,                           // bInterval: Polling Interval (10 ms)
 
     // OUT endpoint descriptor
 
@@ -352,7 +365,7 @@ namespace stm32plus {
     OUT_ENDPOINT_ADDRESS,           // bEndpointAddress: Endpoint Address (OUT)
     0x03,                           // bmAttributes: Interrupt endpoint
     TConfiguration::OUT_ENDPOINT_MAX_PACKET_SIZE,0, // wMaxPacketSize: 2 Bytes max
-    0x20,                           // bInterval: Polling Interval (20 ms)
+    0x0A,                           // bInterval: Polling Interval (10 ms)
   };
 
 
