@@ -1070,7 +1070,7 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="DIO-11598" x="35.56" y="43.942" size="1.778" layer="27" display="off"/>
 </element>
 <element name="F1" library="OneButton" library_urn="urn:adsk.eagle:library:995496" package="R1206" package3d_urn="urn:adsk.eagle:package:996397/2" value="" x="36.576" y="37.846" smashed="yes" rot="R270">
-<attribute name="MPN" value="0ZCG0075FF2C" x="36.576" y="37.846" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MPN" value="0ZCJ0075AF2E" x="36.576" y="37.846" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="36.83" y="34.798" size="0.8128" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="34.163" y="39.243" size="1.27" layer="27" rot="R270"/>
 </element>

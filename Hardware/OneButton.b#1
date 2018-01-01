@@ -171,7 +171,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="no" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyOWIzNWE0" projecturn="a.cGVyc29uYWw6dWUyOWIzNWE0IzIwMTcxMTE2MTA0MzQ1OTMx" f3durn="urn:adsk.wipprod:dm.lineage:3o56KeDPRzWAUemNaZwOsA" pcbguid="a306fca7-449d-483e-a537-4071dfb8ccdc" lastpulledtime="" lastsyncedchangeguid="f4d08cc2-7dfe-5752-75dc-88ed0e09ef84"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyOWIzNWE0" projecturn="a.cGVyc29uYWw6dWUyOWIzNWE0IzIwMTcxMTE2MTA0MzQ1OTMx" f3durn="urn:adsk.wipprod:dm.lineage:3o56KeDPRzWAUemNaZwOsA" pcbguid="a306fca7-449d-483e-a537-4071dfb8ccdc" lastpulledtime="" lastsyncedchangeguid="9878b9e9-0aae-c687-6ea3-f14e68660712"/>
 <plain>
 <circle x="25.4" y="25.4" radius="25.4" width="0.0762" layer="20"/>
 <text x="19.939" y="30.353" size="1.27" layer="25" font="vector">:)</text>

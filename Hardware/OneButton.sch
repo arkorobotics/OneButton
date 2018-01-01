@@ -2241,9 +2241,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="C9" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="0.1UF" device="CAP-0603" package3d_urn="urn:adsk.eagle:package:1011647/2" value="0.1uF"/>
 <part name="C10" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="0.1UF" device="CAP-0603" package3d_urn="urn:adsk.eagle:package:1011647/2" value="0.1uF"/>
 <part name="R1" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="RESISTOR" device="RES-0603" package3d_urn="urn:adsk.eagle:package:1000617/3" value="68R"/>
-<part name="R2" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="RESISTOR" device="RES-0603" package3d_urn="urn:adsk.eagle:package:1000617/3" value="DNP"/>
+<part name="R2" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="RESISTOR" device="RES-0603" package3d_urn="urn:adsk.eagle:package:1000617/3" value="10k"/>
 <part name="SUPPLY2" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="3.3V" device=""/>
-<part name="C11" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="CAPACITOR" device="CAP-0603" package3d_urn="urn:adsk.eagle:package:1011647/2" value="DNP"/>
+<part name="C11" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="CAPACITOR" device="CAP-0603" package3d_urn="urn:adsk.eagle:package:1011647/2" value="0.1uF"/>
 <part name="SW1" library="OneButton" library_urn="urn:adsk.eagle:library:995496" deviceset="SMD-BUTTON-TOP-DHT-4235A(4P-4.2X3.2MM)" device="" package3d_urn="urn:adsk.eagle:package:1000734/2" value="DHT-4235A"/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>

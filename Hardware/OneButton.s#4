@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.4.3">
+<eagle version="8.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -2387,6 +2387,8 @@ NOTES: THIS PAGE</text>
 <wire x1="364.49" y1="226.06" x2="360.68" y2="219.71" width="0.1524" layer="97"/>
 <wire x1="360.68" y1="219.71" x2="368.3" y2="219.71" width="0.1524" layer="97"/>
 <wire x1="368.3" y1="219.71" x2="364.49" y2="226.06" width="0.1524" layer="97"/>
+<text x="243.84" y="128.27" size="2.54" layer="97">TODO:
+1. UPDATE PTC to 1206</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

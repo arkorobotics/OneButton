@@ -2351,6 +2351,8 @@ NOTES: THIS PAGE</text>
 <wire x1="364.49" y1="226.06" x2="360.68" y2="219.71" width="0.1524" layer="97"/>
 <wire x1="360.68" y1="219.71" x2="368.3" y2="219.71" width="0.1524" layer="97"/>
 <wire x1="368.3" y1="219.71" x2="364.49" y2="226.06" width="0.1524" layer="97"/>
+<text x="236.22" y="139.7" size="1.778" layer="97">TODO:
+1.  Label SW-DEBUG port pins</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.4.3">
+<eagle version="8.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -171,7 +171,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="no" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyOWIzNWE0" projecturn="a.cGVyc29uYWw6dWUyOWIzNWE0IzIwMTcxMTE2MTA0MzQ1OTMx" f3durn="urn:adsk.wipprod:dm.lineage:3o56KeDPRzWAUemNaZwOsA" pcbguid="a306fca7-449d-483e-a537-4071dfb8ccdc" lastpulledtime="" lastsyncedchangeguid="46439131-47f8-42cd-4a6f-e019daabe118"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyOWIzNWE0" projecturn="a.cGVyc29uYWw6dWUyOWIzNWE0IzIwMTcxMTE2MTA0MzQ1OTMx" f3durn="urn:adsk.wipprod:dm.lineage:3o56KeDPRzWAUemNaZwOsA" pcbguid="a306fca7-449d-483e-a537-4071dfb8ccdc" lastpulledtime="" lastsyncedchangeguid="f4d08cc2-7dfe-5752-75dc-88ed0e09ef84"/>
 <plain>
 <circle x="25.4" y="25.4" radius="25.4" width="0.0762" layer="20"/>
 <text x="19.939" y="30.353" size="1.27" layer="25" font="vector">:)</text>
@@ -915,6 +915,7 @@ design rules under a new name.</description>
 <param name="checkFont" value="1"/>
 <param name="checkRestrict" value="1"/>
 <param name="checkStop" value="0"/>
+<param name="checkValues" value="0"/>
 <param name="useDiameter" value="13"/>
 <param name="maxErrors" value="50"/>
 </designrules>

@@ -16,7 +16,7 @@ Base Libraries: Andy Brown - https://github.com/andysworkshop/stm32plus
 using namespace stm32plus;
 
 
-class UsbDeviceCustomHid {
+class OneButton {
 
   protected:
 
@@ -24,8 +24,13 @@ class UsbDeviceCustomHid {
      * Definition for the LED. Change to suit your board.
      */
 
-    enum { LED_PIN = 1 };
-    typedef GpioB<DefaultDigitalOutputFeature<LED_PIN>> LedPort;
+    enum { 
+      KEY_IN_PIN = 6,
+      KEY_OUT_PIN = 5
+    };
+
+    typedef GpioA<DefaultDigitalInputFeature<KEY_IN_PIN>> ButtonInPort;
+    typedef GpioA<DefaultDigitalOutputFeature<KEY_OUT_PIN>> ButtonOutPort;
 
 
     /*
@@ -33,7 +38,7 @@ class UsbDeviceCustomHid {
      * requirements.
      */
 
-    struct MyHidConfiguration {
+    struct UsbHidKeyboard {
 
       enum {
 
@@ -46,14 +51,7 @@ class UsbDeviceCustomHid {
         VID = 0xCAFE,
         PID = 0xDEAD,
 
-        /*
-         * IN and OUT are always with respect to the host. You as a device transmit on an IN
-         * endpoint and receive on an OUT endpoint. Define how big your reports are here. 64-bytes
-         * is the maximum allowed.
-         *
-         * Report id #1 is for reports TO the host (IN direction)
-         * Report id #2 is for reports FROM the host (OUT direction)
-         */
+
 
         IN_ENDPOINT_MAX_PACKET_SIZE = 9,   // 1 byte report id + 8-byte report
         OUT_ENDPOINT_MAX_PACKET_SIZE = 2,  // 1 byte report id + 1-byte report
@@ -116,27 +114,32 @@ class UsbDeviceCustomHid {
       _lastTransmitTime=0;
 
       /*
-       * Declare the LED port and turn off the LED
+       * Declare the One Button Key port
        */
 
-      LedPort led;
-      led[LED_PIN].reset();
+      ButtonOutPort keyout;
+      keyout[KEY_OUT_PIN].reset();
+      keyout.setState(0);
+
+      ButtonInPort keyin;
+      keyin[KEY_IN_PIN].reset();
+
 
       /*
        * Declare the USB custom HID object. This will initialise pins but won't
        * power up the device yet.
        */
 
-      UsbKeyboard<MyHidConfiguration> usb;
+      UsbKeyboard<UsbHidKeyboard> usb;
 
 
       /*
        * Subscribe to all the events
        */
 
-      usb.UsbRxEventSender.insertSubscriber(UsbRxEventSourceSlot::bind(this,&UsbDeviceCustomHid::onReceive));
-      usb.UsbTxCompleteEventSender.insertSubscriber(UsbTxCompleteEventSourceSlot::bind(this,&UsbDeviceCustomHid::onTransmitComplete));
-      usb.UsbStatusEventSender.insertSubscriber(UsbStatusEventSourceSlot::bind(this,&UsbDeviceCustomHid::onStatusChange));
+      usb.UsbRxEventSender.insertSubscriber(UsbRxEventSourceSlot::bind(this,&OneButton::onReceive));
+      usb.UsbTxCompleteEventSender.insertSubscriber(UsbTxCompleteEventSourceSlot::bind(this,&OneButton::onTransmitComplete));
+      usb.UsbStatusEventSender.insertSubscriber(UsbStatusEventSourceSlot::bind(this,&OneButton::onStatusChange));
 
       /*
        * Start the peripheral. This will pull up the DP line which is the trigger for the host
@@ -146,27 +149,36 @@ class UsbDeviceCustomHid {
       usb.start();
 
       /*
-       * Go into an infinite loop running the demo
+       * Go into an infinite loop
        */
 
-      for(;;) {
+      for(;;)
+      {
+        uint8_t _debounce = 0;
 
-        // if we're configured and it's been a second since the last time
-        // then send a report to the host
+        if(keyin.read()==0 && _debounce == 0)
+        {
+          uint8_t usb_key_report[8] = {2, 0, 5, 0, 0, 0, 0, 0};
 
-        if(_deviceConfigured && MillisecondTimer::hasTimedOut(_lastTransmitTime,1000)) {
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
 
-          // there's a race here in which the device could become unconfigured. a real program
-          // should check the return value from usb.sendReport() before assuming that any
-          // data was actually sent
+          MillisecondTimer::delay(10);
 
-          // note that the report data is always prefixed with the report ID, for the stm32plus
-          // custom HID implementation report id #1 is for the IN direction (to host).
-          uint8_t usb_key_report[8] = {2, 0, 4, 0, 0, 0, 0, 0};
-          usb.sendReport(usb_key_report,8);
+          uint8_t usb_key_report_2[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
-          _lastTransmitTime=MillisecondTimer::millis();
+          usb.sendReport(usb_key_report_2,sizeof(usb_key_report_2));
+          
+          MillisecondTimer::delay(10);
+
+          _debounce = 1;
+          MillisecondTimer::delay(200);
         }
+
+        if(keyin.read() == 1)
+        {
+          _debounce = 0;
+        }
+
       }
     }
 
@@ -228,32 +240,32 @@ class UsbDeviceCustomHid {
  * in the configuration class.
  */
 
-const uint8_t UsbDeviceCustomHid::MyHidConfiguration::ManufacturerString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::ManufacturerString)]={
-  sizeof(UsbDeviceCustomHid::MyHidConfiguration::ManufacturerString),
+const uint8_t OneButton::UsbHidKeyboard::ManufacturerString[sizeof(OneButton::UsbHidKeyboard::ManufacturerString)]={
+  sizeof(OneButton::UsbHidKeyboard::ManufacturerString),
   USB_DESC_TYPE_STRING,
   'O',0,'N',0,'E',0,' ',0,'B',0,'U',0,'T',0,'T',0,'O',0,'N',0
 };
 
-const uint8_t UsbDeviceCustomHid::MyHidConfiguration::ProductString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::ProductString)]={
-  sizeof(UsbDeviceCustomHid::MyHidConfiguration::ProductString),
+const uint8_t OneButton::UsbHidKeyboard::ProductString[sizeof(OneButton::UsbHidKeyboard::ProductString)]={
+  sizeof(OneButton::UsbHidKeyboard::ProductString),
   USB_DESC_TYPE_STRING,
   'O',0,'N',0,'E',0,' ',0,'B',0,'U',0,'T',0,'T',0,'O',0,'N',0
 };
 
-const uint8_t UsbDeviceCustomHid::MyHidConfiguration::SerialString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::SerialString)]={
-  sizeof(UsbDeviceCustomHid::MyHidConfiguration::SerialString),
+const uint8_t OneButton::UsbHidKeyboard::SerialString[sizeof(OneButton::UsbHidKeyboard::SerialString)]={
+  sizeof(OneButton::UsbHidKeyboard::SerialString),
   USB_DESC_TYPE_STRING,
   '1',0,'.',0,'0',0,'.',0,'0',0
 };
 
-const uint8_t UsbDeviceCustomHid::MyHidConfiguration::ConfigurationString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::ConfigurationString)]={
-  sizeof(UsbDeviceCustomHid::MyHidConfiguration::ConfigurationString),
+const uint8_t OneButton::UsbHidKeyboard::ConfigurationString[sizeof(OneButton::UsbHidKeyboard::ConfigurationString)]={
+  sizeof(OneButton::UsbHidKeyboard::ConfigurationString),
   USB_DESC_TYPE_STRING,
   'c',0,'f',0,'g',0
 };
 
-const uint8_t UsbDeviceCustomHid::MyHidConfiguration::InterfaceString[sizeof(UsbDeviceCustomHid::MyHidConfiguration::InterfaceString)]={
-  sizeof(UsbDeviceCustomHid::MyHidConfiguration::InterfaceString),
+const uint8_t OneButton::UsbHidKeyboard::InterfaceString[sizeof(OneButton::UsbHidKeyboard::InterfaceString)]={
+  sizeof(OneButton::UsbHidKeyboard::InterfaceString),
   USB_DESC_TYPE_STRING,
   'i',0,'t',0,'f',0
 };
@@ -264,10 +276,12 @@ const uint8_t UsbDeviceCustomHid::MyHidConfiguration::InterfaceString[sizeof(Usb
 
 int main() {
 
+  Nvic::initialise();
+
   // set up SysTick at 1ms resolution
   MillisecondTimer::initialise();
 
-  UsbDeviceCustomHid hid;
+  OneButton hid;
   hid.run();
 
   // not reached
