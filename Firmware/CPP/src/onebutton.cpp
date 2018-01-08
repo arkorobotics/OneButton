@@ -11,7 +11,10 @@ Base Libraries: Andy Brown - https://github.com/andysworkshop/stm32plus
 
 #include "config/stm32plus.h"
 #include "config/usb/device/device.h"
+#include "config/spi.h"
+#include "config/dma.h"
 #include "config/timing.h"
+
 
 using namespace stm32plus;
 
@@ -32,6 +35,8 @@ class OneButton {
     typedef GpioA<DefaultDigitalInputFeature<KEY_IN_PIN>> ButtonInPort;
     typedef GpioA<DefaultDigitalOutputFeature<KEY_OUT_PIN>> ButtonOutPort;
 
+
+    const uint8_t *dataToSend=(const uint8_t *)"\xF0\xF0\xF0\xF0\xF0\xF0\xF0";
 
     /*
      * The constants in this structure are used to customise the HID to your
@@ -94,12 +99,14 @@ class OneButton {
 
 
     /*
-     * Member variables for this demo
+     * Member variables
      */
 
     volatile bool _deviceConfigured;
     volatile uint32_t _receivedReportTime;
     volatile uint32_t _lastTransmitTime;
+
+    volatile uint8_t _debounce = 0;
 
   public:
 
@@ -112,6 +119,21 @@ class OneButton {
       _deviceConfigured=false;
       _receivedReportTime=UINT32_MAX-1000;
       _lastTransmitTime=0;
+
+
+      // SPI DMA - WS8212 Single NZR Communication Mode
+      //
+      typedef Spi1<> SPISender;
+
+      SPISender::Parameters senderParams;
+
+      senderParams.spi_mode = SPI_Mode_Master;
+      senderParams.spi_baudRatePrescaler = SPI_BaudRatePrescaler_2;
+
+      SPISender sender(senderParams);
+
+      Spi1TxDmaChannel<SpiDmaWriterFeature<Spi1PeripheralTraits,DMA_Priority_Medium> > dmaSender;
+
 
       /*
        * Declare the One Button Key port
@@ -148,14 +170,10 @@ class OneButton {
 
       usb.start();
 
-      /*
-       * Go into an infinite loop
-       */
-
+      
+      // Main Loop
       for(;;)
       {
-        uint8_t _debounce = 0;
-
         if(keyin.read()==0 && _debounce == 0)
         {
           uint8_t usb_key_report[8] = {2, 0, 5, 0, 0, 0, 0, 0};
@@ -179,7 +197,16 @@ class OneButton {
           _debounce = 0;
         }
 
+        // SPI DMA Output to WS8212
+        sender.setNss(false);
+
+        dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
+
+        sender.waitForIdle();
+        sender.setNss(true);
+
       }
+
     }
 
 
@@ -229,6 +256,7 @@ class OneButton {
           break;
       }
     }
+
 };
 
 
@@ -281,8 +309,8 @@ int main() {
   // set up SysTick at 1ms resolution
   MillisecondTimer::initialise();
 
-  OneButton hid;
-  hid.run();
+  OneButton onebutton;
+  onebutton.run();
 
   // not reached
   return 0;
