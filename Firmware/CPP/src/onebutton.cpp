@@ -42,6 +42,8 @@ class OneButton {
 
     uint32_t estop = 1;
 
+    uint8_t colorsweep = 0;
+
     /*
      * The constants in this structure are used to customise the HID to your
      * requirements.
@@ -173,43 +175,10 @@ class OneButton {
        */
 
       usb.start();
-
       
       // Main Loop
       for(;;)
       {
-        if(keyin.read()==0 && _debounce == 0)
-        {
-          uint8_t usb_key_report[8] = {2, 0, 5, 0, 0, 0, 0, 0};
-
-          usb.sendReport(usb_key_report,sizeof(usb_key_report));
-
-          MillisecondTimer::delay(10);
-
-          uint8_t usb_key_report_2[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-
-          usb.sendReport(usb_key_report_2,sizeof(usb_key_report_2));
-          
-          MillisecondTimer::delay(10);
-
-          _debounce = 1;
-          MillisecondTimer::delay(200);
-
-          if(estop == 1)
-          {
-            estop = 0;
-          }
-          else
-          {
-            estop = 1;
-          }
-        }
-
-        if(keyin.read() == 1)
-        {
-          _debounce = 0;
-        }
-
         //0xF00 - High
         //0xFC0 - Low
 
@@ -220,7 +189,7 @@ class OneButton {
         {
           if(color == estop)
           {
-            led_bytes[led_bytes_idx] = 0x0F;
+            led_bytes[led_bytes_idx] = reverseBits(0x05);
           }
           else
           {
@@ -237,6 +206,8 @@ class OneButton {
           }
         }
         
+        colorsweep++;
+        
         uint16_t led_bit_high = 0xFE0;
         uint16_t led_bit_low = 0xF00;
 
@@ -249,9 +220,9 @@ class OneButton {
         {
           uint8_t led_byte = led_bytes[a];
 
-          for(int b=0; b<4; b++)
+          for(int b=0; b<8; b=b+2)
           {
-            if( ((led_byte >> b) && 0x01) == 1)
+            if( ((led_byte >> b) & 0x01) == 1)
             {
               led_bit_1 = led_bit_high;
             }
@@ -260,7 +231,7 @@ class OneButton {
               led_bit_1 = led_bit_low;
             }
 
-            if( ((led_byte >> (b+1)) && 0x01) == 1)
+            if( ((led_byte >> (b+1)) & 0x01) == 1)
             {
               led_bit_2 = led_bit_high;
             }
@@ -269,9 +240,9 @@ class OneButton {
               led_bit_2 = led_bit_low;
             }
 
-            dataToSend[data_idx]   = (0xFF & (uint16_t)(led_bit_1 >> 4));
-            dataToSend[data_idx+1] = (0xF0 & (uint16_t)(led_bit_1 << 8)) + (0x0F & (uint16_t)(led_bit_2 >> 8));
-            dataToSend[data_idx+2] = (0xFF & (uint16_t)(led_bit_2));
+            dataToSend[data_idx]   = (uint8_t)(0xFF & (uint16_t)(led_bit_1 >> 4));
+            dataToSend[data_idx+1] = ((uint8_t)(0x0F & led_bit_1) << 4) | (uint8_t)(0x0F & (uint16_t)(led_bit_2 >> 8));
+            dataToSend[data_idx+2] = (uint8_t)(0xFF & (uint16_t)(led_bit_2));
 
             data_idx = data_idx + 3;
           }
@@ -279,10 +250,51 @@ class OneButton {
 
         dataToSend[288] = 0;
 
-        // SPI DMA Output to WS8212
-        sender.setNss(false);
+        if(keyin.read()==0 && _debounce == 0)
+        {
+          // SPI DMA Output to WS8212
+          sender.setNss(false);
 
-        dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
+          dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
+
+          // Send Key Hit
+          uint8_t usb_key_report[8] = {2, 0, 5, 0, 0, 0, 0, 0};
+
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+
+          MillisecondTimer::delay(10);
+
+          uint8_t usb_key_report_2[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+          usb.sendReport(usb_key_report_2,sizeof(usb_key_report_2));
+          
+          MillisecondTimer::delay(10);
+
+          _debounce = 1;
+
+          MillisecondTimer::delay(200);
+
+          if(estop == 1)
+          {
+            estop = 0;
+          }
+          else
+          {
+            estop = 1;
+          }
+        }
+        else
+        {
+          // SPI DMA Output to WS8212
+          sender.setNss(false);
+
+          dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
+        }
+
+        if(keyin.read() == 1)
+        {
+          _debounce = 0;
+        }
 
         sender.waitForIdle();
         sender.setNss(true);
@@ -339,6 +351,26 @@ class OneButton {
         default:
           break;
       }
+    }
+
+    uint8_t reverseBits(uint8_t byte_in)
+    {
+      uint8_t byte = byte_in;
+      uint8_t byte_out = 0;
+      uint8_t bit = 0;
+
+      for(int idx=1; idx<=8; idx++)
+      { 
+        bit = byte & 0x01;
+        byte = byte >> 1;
+        byte_out = byte_out << 1; 
+        if(bit==1)
+        {
+          byte_out = byte_out + 1;
+        }
+      }
+
+      return byte_out;
     }
 
 };
