@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.5.0">
+<eagle version="8.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -2355,7 +2355,8 @@ NOTES: THIS PAGE</text>
 1.  Label SW-DEBUG port pins
 2. Set BOOT0 to pull-down
 3. Move DAT_IN to SPI1 MOSI (PA7)
-4. Move Button Pins and Button LED</text>
+4. Move Button Pins and Button LED
+5. Add surge current protection (IC)</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

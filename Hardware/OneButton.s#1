@@ -2354,7 +2354,9 @@ NOTES: THIS PAGE</text>
 <text x="236.22" y="139.7" size="1.778" layer="97">TODO:
 1.  Label SW-DEBUG port pins
 2. Set BOOT0 to pull-down
-3. Move DAT_IN to SPI1 MOSI (PA7)</text>
+3. Move DAT_IN to SPI1 MOSI (PA7)
+4. Move Button Pins and Button LED
+5. Add surge current protection</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

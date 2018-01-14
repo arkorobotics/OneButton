@@ -71,7 +71,7 @@ class OneButton {
          * The number of milliamps that our device will use. The maximum you can specify is 510.
          */
 
-        MILLIAMPS = 500,
+        MILLIAMPS = 400,
 
         /*
          * Additional configuration flags for the device. The available options that can be
@@ -152,6 +152,7 @@ class OneButton {
       ButtonInPort keyin;
       keyin[KEY_IN_PIN].reset();
 
+      MillisecondTimer::delay(1000);
 
       /*
        * Declare the USB custom HID object. This will initialise pins but won't
@@ -175,7 +176,7 @@ class OneButton {
        */
 
       usb.start();
-      
+
       // Main Loop
       for(;;)
       {
@@ -189,7 +190,7 @@ class OneButton {
         {
           if(color == estop)
           {
-            led_bytes[led_bytes_idx] = reverseBits(0x05);
+            led_bytes[led_bytes_idx] = reverseBits(0xFF);
           }
           else
           {

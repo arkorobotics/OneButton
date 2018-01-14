@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.4.3">
+<eagle version="8.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -171,7 +171,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="no" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyOWIzNWE0" projecturn="a.cGVyc29uYWw6dWUyOWIzNWE0IzIwMTcxMTE2MTA0MzQ1OTMx" f3durn="urn:adsk.wipprod:dm.lineage:3o56KeDPRzWAUemNaZwOsA" pcbguid="a306fca7-449d-483e-a537-4071dfb8ccdc" lastpulledtime="" lastsyncedchangeguid="46439131-47f8-42cd-4a6f-e019daabe118"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyOWIzNWE0" projecturn="a.cGVyc29uYWw6dWUyOWIzNWE0IzIwMTcxMTE2MTA0MzQ1OTMx" f3durn="urn:adsk.wipprod:dm.lineage:3o56KeDPRzWAUemNaZwOsA" pcbguid="a306fca7-449d-483e-a537-4071dfb8ccdc" lastpulledtime="" lastsyncedchangeguid="f4d08cc2-7dfe-5752-75dc-88ed0e09ef84"/>
 <plain>
 <circle x="25.4" y="25.4" radius="25.4" width="0.0762" layer="20"/>
 <text x="19.939" y="30.353" size="1.27" layer="25" font="vector">:)</text>
@@ -915,6 +915,7 @@ design rules under a new name.</description>
 <param name="checkFont" value="1"/>
 <param name="checkRestrict" value="1"/>
 <param name="checkStop" value="0"/>
+<param name="checkValues" value="0"/>
 <param name="useDiameter" value="13"/>
 <param name="maxErrors" value="50"/>
 </designrules>
@@ -1069,7 +1070,7 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="DIO-11598" x="35.56" y="43.942" size="1.778" layer="27" display="off"/>
 </element>
 <element name="F1" library="OneButton" library_urn="urn:adsk.eagle:library:995496" package="R1206" package3d_urn="urn:adsk.eagle:package:996397/2" value="" x="36.576" y="37.846" smashed="yes" rot="R270">
-<attribute name="MPN" value="0ZCG0075FF2C" x="36.576" y="37.846" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MPN" value="0ZCJ0075AF2E" x="36.576" y="37.846" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="36.83" y="34.798" size="0.8128" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="34.163" y="39.243" size="1.27" layer="27" rot="R270"/>
 </element>
