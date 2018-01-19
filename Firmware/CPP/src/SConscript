@@ -37,6 +37,7 @@ if supported:
   matches=[]
   matches.append(Glob("*.cpp"))
   matches.append(Glob("*.c"))
+  matches.append(Glob("*.h"))
   matches.append(Glob("*.asm"))
   matches.append("system/LibraryHacks.cpp")
 

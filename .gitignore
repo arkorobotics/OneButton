@@ -1,1 +1,3 @@
 /Firmware/Rust/target
+/Firmware/CPP/src/build
+/Firmware/CPP/lib/build

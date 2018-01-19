@@ -2353,7 +2353,8 @@ NOTES: THIS PAGE</text>
 <wire x1="368.3" y1="219.71" x2="364.49" y2="226.06" width="0.1524" layer="97"/>
 <text x="236.22" y="139.7" size="1.778" layer="97">TODO:
 1.  Label SW-DEBUG port pins
-2. Set BOOT0 to pull-down</text>
+2. Set BOOT0 to pull-down
+3. Move DAT_IN to SPI MOSI</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

@@ -1,5 +1,5 @@
 [Eagle]
-Version="08 05 00"
+Version="08 05 02"
 Platform="Mac OS X"
 Globals="Globals"
 Desktop="Desktop"
@@ -400,10 +400,5 @@ UsedLibrary="/Users/arko/GitHub/HABEXpico/Hardware/HABEXpico8/habexpico8.lbr"
 UsedLibrary="/Users/arko/GitHub/SparkFun-Eagle-Libraries/LilyPad-Wearables.lbr"
 UsedLibrary="/Users/arko/Documents/eagle/lbr/micro-stm_v3.lbr"
 
-[Win_1]
-Type="Control Panel"
-Number=0
-
 [Desktop]
-Screen="3200 1080"
-Window="Win_1"
+Screen="640 480"

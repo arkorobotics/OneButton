@@ -2356,7 +2356,7 @@ NOTES: THIS PAGE</text>
 2. Set BOOT0 to pull-down
 3. Move DAT_IN to SPI1 MOSI (PA7)
 4. Move Button Pins and Button LED
-5. Add surge current protection (IC)</text>
+5. Add inrush current protection (IC)</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

@@ -258,12 +258,19 @@ class OneButton {
 
           dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
 
-          // Send Key Hit
-          uint8_t usb_key_report[8] = {2, 0, 5, 0, 0, 0, 0, 0};
+          uint8_t keystring[] = "LOL";
+          
+          for(uint8_t i=0; i < sizeof(keystring); i++)
+          {
+            uint8_t _sendchar = keystring[i] - (0x39+0x04);
 
-          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+            // Send Key Hit
+            uint8_t usb_key_report[8] = {2, 0, _sendchar, 0, 0, 0, 0, 0};
 
-          MillisecondTimer::delay(10);
+            usb.sendReport(usb_key_report,sizeof(usb_key_report));
+
+            MillisecondTimer::delay(10);
+          }
 
           uint8_t usb_key_report_2[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
