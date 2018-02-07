@@ -258,7 +258,7 @@ class OneButton {
 
           dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
 
-          uint8_t keystring[] = "LOL";
+          uint8_t keystring[] = "ESTOPi";
           
           for(uint8_t i=0; i < sizeof(keystring); i++)
           {

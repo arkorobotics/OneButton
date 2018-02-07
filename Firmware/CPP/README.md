@@ -27,12 +27,18 @@
 ## Build
 
 1. Build source using scons
+	
+	Optimized:
 
 	`$ scons mode=fast mcu=f042 hsi=48000000`
 
+	Debug:
+
+	`$ scons mode=debug mcu=f042 hsi=48000000`
+
 ## Flash Device
 
-1. Flash device using st-flash
+1. Flash device with optimized binary using st-flash
 
 	`$ st-flash --format ihex write src/build/fast-f042-48000000i/onebutton.hex`
 
@@ -50,7 +56,7 @@
 
 4. Terminal 2: GDB Session
 
-	`$ arm-none-eabi-gdb src/build/fast-f042-48000000i/onebutton.elf`
+	`$ arm-none-eabi-gdb src/build/debug-f042-48000000i/onebutton.elf`
 
 	`(gdb) target extended-remote localhost:4242`
 
