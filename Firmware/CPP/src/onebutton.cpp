@@ -15,6 +15,8 @@ Base Libraries: Andy Brown - https://github.com/andysworkshop/stm32plus
 #include "config/dma.h"
 #include "config/timing.h"
 
+#include "usb_hid_keys.h"
+
 
 using namespace stm32plus;
 
@@ -115,6 +117,14 @@ class OneButton {
     volatile uint8_t _debounce = 0;
 
   public:
+    
+    /*
+    * Declare the USB custom HID object. This will initialise pins but won't
+    * power up the device yet.
+    */
+
+    UsbKeyboard<UsbHidKeyboard> usb;
+
 
     void run() {
 
@@ -154,12 +164,6 @@ class OneButton {
 
       MillisecondTimer::delay(1000);
 
-      /*
-       * Declare the USB custom HID object. This will initialise pins but won't
-       * power up the device yet.
-       */
-
-      UsbKeyboard<UsbHidKeyboard> usb;
 
 
       /*
@@ -258,25 +262,40 @@ class OneButton {
 
           dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
 
-          uint8_t keystring[] = "ESTOPi";
-          
-          for(uint8_t i=0; i < sizeof(keystring); i++)
-          {
-            uint8_t _sendchar = keystring[i] - (0x39+0x04);
 
-            // Send Key Hit
-            uint8_t usb_key_report[8] = {2, 0, _sendchar, 0, 0, 0, 0, 0};
+          // Initialize USB Key Report
+          uint8_t usb_key_report[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
-            usb.sendReport(usb_key_report,sizeof(usb_key_report));
-
-            MillisecondTimer::delay(10);
-          }
-
-          uint8_t usb_key_report_2[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-
-          usb.sendReport(usb_key_report_2,sizeof(usb_key_report_2));
-          
+          // CTRL + F12
+          usb_key_report[0] = KEY_MOD_LCTRL;
+          usb_key_report[2] = KEY_F12;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
           MillisecondTimer::delay(10);
+          
+          // Wait for search box
+          MillisecondTimer::delay(500);
+
+          // TYPE 'firefox'
+          uint8_t keystring[] = "firefox";
+          sendstring(keystring, sizeof(keystring));
+          MillisecondTimer::delay(10);
+
+          // Wait for search results
+          MillisecondTimer::delay(500);
+
+          // ENTER
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_ENTER;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(10);
+
+
+          // Last Key Report must be all zeros
+          usb_key_report[0] = 0;
+          usb_key_report[2] = 0;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(10);
+
 
           _debounce = 1;
 
@@ -381,6 +400,21 @@ class OneButton {
       return byte_out;
     }
 
+
+    void sendstring(uint8_t* straddress, uint8_t length)
+    {
+      for(uint8_t i=0; i < length; i++)
+      {
+        uint8_t _sendchar = straddress[i] - (uint8_t)(0x5D);
+
+        // Send Key Hit
+        uint8_t usb_report[8] = {0, 0, _sendchar, 0, 0, 0, 0, 0};
+
+        usb.sendReport(usb_report,sizeof(usb_report));
+
+        MillisecondTimer::delay(10);
+      }
+    }
 };
 
 
