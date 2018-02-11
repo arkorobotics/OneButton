@@ -290,8 +290,8 @@ class OneButton {
           MillisecondTimer::delay(12000);
           sendendreport();
 
-          // TYPE 'hack'
-          uint8_t h_string[] = "hack";
+          // TYPE 'star'
+          uint8_t h_string[] = "star";
           sendstring(h_string, sizeof(h_string));
           MillisecondTimer::delay(20);
           sendendreport();
@@ -303,8 +303,8 @@ class OneButton {
           MillisecondTimer::delay(20);
           sendendreport();
 
-          // TYPE 'the'
-          uint8_t t_string[] = "the";
+          // TYPE 'wars'
+          uint8_t t_string[] = "wars";
           sendstring(t_string, sizeof(t_string));
           MillisecondTimer::delay(20);
           sendendreport();
@@ -316,8 +316,8 @@ class OneButton {
           MillisecondTimer::delay(20);
           sendendreport();
 
-          // TYPE 'planet'
-          uint8_t p_string[] = "planet";
+          // TYPE 'soundtrack'
+          uint8_t p_string[] = "soundtrack";
           sendstring(p_string, sizeof(p_string));
           MillisecondTimer::delay(20);
           sendendreport();
@@ -379,7 +379,7 @@ class OneButton {
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
           MillisecondTimer::delay(20);
           sendendreport();
-          MillisecondTimer::delay(500);
+          MillisecondTimer::delay(1500);
 
           // TYPE 'telnet'
           uint8_t tel_string[] = "telnet";
