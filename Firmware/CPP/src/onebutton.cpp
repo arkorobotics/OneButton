@@ -47,7 +47,7 @@ class OneButton {
     uint8_t colorsweep = 0;
 
     /*
-     * The constants in this structure are used to customise the HID to your
+     * The constants in this structure are used to customize the HID to your
      * requirements.
      */
 
@@ -73,7 +73,7 @@ class OneButton {
          * The number of milliamps that our device will use. The maximum you can specify is 510.
          */
 
-        MILLIAMPS = 400,
+        MILLIAMPS = 500,
 
         /*
          * Additional configuration flags for the device. The available options that can be
@@ -270,7 +270,7 @@ class OneButton {
           usb_key_report[0] = KEY_MOD_LCTRL;
           usb_key_report[2] = KEY_F12;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
-          MillisecondTimer::delay(10);
+          MillisecondTimer::delay(20);
           
           // Wait for search box
           MillisecondTimer::delay(500);
@@ -278,7 +278,7 @@ class OneButton {
           // TYPE 'firefox'
           uint8_t keystring[] = "firefox";
           sendstring(keystring, sizeof(keystring));
-          MillisecondTimer::delay(10);
+          MillisecondTimer::delay(20);
 
           // Wait for search results
           MillisecondTimer::delay(500);
@@ -287,14 +287,152 @@ class OneButton {
           usb_key_report[0] = 0;
           usb_key_report[2] = KEY_ENTER;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
-          MillisecondTimer::delay(10);
+          MillisecondTimer::delay(12000);
+          sendendreport();
 
+          // TYPE 'hack'
+          uint8_t h_string[] = "hack";
+          sendstring(h_string, sizeof(h_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
 
-          // Last Key Report must be all zeros
+          // SPACE
           usb_key_report[0] = 0;
-          usb_key_report[2] = 0;
+          usb_key_report[2] = KEY_SPACE;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
-          MillisecondTimer::delay(10);
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TYPE 'the'
+          uint8_t t_string[] = "the";
+          sendstring(t_string, sizeof(t_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // SPACE
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_SPACE;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TYPE 'planet'
+          uint8_t p_string[] = "planet";
+          sendstring(p_string, sizeof(p_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TAB
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_TAB;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          MillisecondTimer::delay(500);
+
+          // TAB
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_TAB;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          MillisecondTimer::delay(500);
+
+          // TAB
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_TAB;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          MillisecondTimer::delay(500);
+
+          // ENTER
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_ENTER;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          MillisecondTimer::delay(500);
+
+          // -----------------
+
+          // CTRL + F12
+          usb_key_report[0] = KEY_MOD_LCTRL;
+          usb_key_report[2] = KEY_F12;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          
+          // Wait for search box
+          MillisecondTimer::delay(500);
+
+          // TYPE 'terminal'
+          uint8_t ter_string[] = "terminal";
+          sendstring(ter_string, sizeof(ter_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          // Wait for search results
+          MillisecondTimer::delay(1000);
+
+          // ENTER
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_ENTER;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          MillisecondTimer::delay(500);
+
+          // TYPE 'telnet'
+          uint8_t tel_string[] = "telnet";
+          sendstring(tel_string, sizeof(tel_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // SPACE
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_SPACE;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TYPE 'towel'
+          uint8_t towel_string[] = "towel";
+          sendstring(towel_string, sizeof(towel_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // DOT
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_DOT;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TYPE 'blinkenlights'
+          uint8_t blink_string[] = "blinkenlights";
+          sendstring(blink_string, sizeof(blink_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // DOT
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_DOT;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TYPE 'nl'
+          uint8_t nl_string[] = "nl";
+          sendstring(nl_string, sizeof(nl_string));
+          MillisecondTimer::delay(20);
+          sendendreport();
+
+          // ENTER
+          usb_key_report[0] = 0;
+          usb_key_report[2] = KEY_ENTER;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(20);
+          sendendreport();
+          MillisecondTimer::delay(500);
 
 
           _debounce = 1;
@@ -412,8 +550,16 @@ class OneButton {
 
         usb.sendReport(usb_report,sizeof(usb_report));
 
-        MillisecondTimer::delay(10);
+        MillisecondTimer::delay(20);
       }
+    }
+
+    void sendendreport()
+    {
+      // Last Key Report must be all zeros
+      uint8_t usb_end_report[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+      usb.sendReport(usb_end_report,sizeof(usb_end_report));
+      MillisecondTimer::delay(20);
     }
 };
 
