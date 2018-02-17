@@ -184,85 +184,9 @@ class OneButton {
       // Main Loop
       for(;;)
       {
-        //0xF00 - High
-        //0xFC0 - Low
-
-        uint32_t led_bytes_idx = 0;
-        uint32_t color = 0;
-
-        for(led_bytes_idx = 0; led_bytes_idx < 24; led_bytes_idx++)
-        {
-          if(color == estop)
-          {
-            led_bytes[led_bytes_idx] = reverseBits(0xFF);
-          }
-          else
-          {
-            led_bytes[led_bytes_idx] = 0x00;
-          }
-
-          if(color > 1)
-          {
-            color = 0;
-          }
-          else
-          {
-            color++;
-          }
-        }
-        
-        colorsweep++;
-        
-        uint16_t led_bit_high = 0xFE0;
-        uint16_t led_bit_low = 0xF00;
-
-        uint16_t led_bit_1 = 0;
-        uint16_t led_bit_2 = 0;
-
-        uint32_t data_idx = 0;
-
-        for(int a=0; a<24; a++)
-        {
-          uint8_t led_byte = led_bytes[a];
-
-          for(int b=0; b<8; b=b+2)
-          {
-            if( ((led_byte >> b) & 0x01) == 1)
-            {
-              led_bit_1 = led_bit_high;
-            }
-            else
-            {
-              led_bit_1 = led_bit_low;
-            }
-
-            if( ((led_byte >> (b+1)) & 0x01) == 1)
-            {
-              led_bit_2 = led_bit_high;
-            }
-            else
-            {
-              led_bit_2 = led_bit_low;
-            }
-
-            dataToSend[data_idx]   = (uint8_t)(0xFF & (uint16_t)(led_bit_1 >> 4));
-            dataToSend[data_idx+1] = ((uint8_t)(0x0F & led_bit_1) << 4) | (uint8_t)(0x0F & (uint16_t)(led_bit_2 >> 8));
-            dataToSend[data_idx+2] = (uint8_t)(0xFF & (uint16_t)(led_bit_2));
-
-            data_idx = data_idx + 3;
-          }
-        }
-
-        dataToSend[288] = 0;
 
         if(keyin.read()==0 && _debounce == 0)
         {
-          // SPI DMA Output to WS8212
-          sender.setNss(false);
-
-          dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
-
-
           // Initialize USB Key Report
           uint8_t usb_key_report[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -271,10 +195,10 @@ class OneButton {
           usb_key_report[2] = KEY_F12;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
           MillisecondTimer::delay(20);
-          
-          // Wait for search box
-          MillisecondTimer::delay(500);
 
+          sendendreport();
+
+          /*
           // TYPE 'firefox'
           uint8_t keystring[] = "firefox";
           sendstring(keystring, sizeof(keystring));
@@ -447,20 +371,85 @@ class OneButton {
           MillisecondTimer::delay(20);
           sendendreport();
           MillisecondTimer::delay(500);
+          */
 
+          //0xF00 - High
+          //0xFC0 - Low
+
+          uint32_t led_bytes_idx = 0;
+          uint32_t color_g = rand() % 250;
+          uint32_t color_r = rand() % 250;
+          uint32_t color_b = rand() % 250;
+
+          for(led_bytes_idx = 0; led_bytes_idx < 24; led_bytes_idx++)
+          {
+            if(led_bytes_idx % 3 == 0)
+            {
+              led_bytes[led_bytes_idx] = color_g;
+            }
+            if(led_bytes_idx % 3 == 1)
+            {
+              led_bytes[led_bytes_idx] = color_r;
+            }
+            if(led_bytes_idx % 3 == 2)
+            {
+              led_bytes[led_bytes_idx] = color_b;
+            }
+          }
+          
+          colorsweep++;
+          
+          uint16_t led_bit_high = 0xFE0;
+          uint16_t led_bit_low = 0xF00;
+
+          uint16_t led_bit_1 = 0;
+          uint16_t led_bit_2 = 0;
+
+          uint32_t data_idx = 0;
+
+          for(int a=0; a<24; a++)
+          {
+            uint8_t led_byte = led_bytes[a];
+
+            for(int b=0; b<8; b=b+2)
+            {
+              if( ((led_byte >> b) & 0x01) == 1)
+              {
+                led_bit_1 = led_bit_high;
+              }
+              else
+              {
+                led_bit_1 = led_bit_low;
+              }
+
+              if( ((led_byte >> (b+1)) & 0x01) == 1)
+              {
+                led_bit_2 = led_bit_high;
+              }
+              else
+              {
+                led_bit_2 = led_bit_low;
+              }
+
+              dataToSend[data_idx]   = (uint8_t)(0xFF & (uint16_t)(led_bit_1 >> 4));
+              dataToSend[data_idx+1] = ((uint8_t)(0x0F & led_bit_1) << 4) | (uint8_t)(0x0F & (uint16_t)(led_bit_2 >> 8));
+              dataToSend[data_idx+2] = (uint8_t)(0xFF & (uint16_t)(led_bit_2));
+
+              data_idx = data_idx + 3;
+            }
+          }
+
+          dataToSend[288] = 0;
+
+          // SPI DMA Output to WS8212
+          sender.setNss(false);
+
+          dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
 
           _debounce = 1;
 
           MillisecondTimer::delay(200);
 
-          if(estop == 1)
-          {
-            estop = 0;
-          }
-          else
-          {
-            estop = 1;
-          }
         }
         else
         {
