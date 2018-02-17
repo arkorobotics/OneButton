@@ -322,11 +322,24 @@ class OneButton {
           MillisecondTimer::delay(20);
           sendendreport();
 
-          // TAB
+          // SPACE
           usb_key_report[0] = 0;
-          usb_key_report[2] = KEY_TAB;
+          usb_key_report[2] = KEY_SPACE;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
           MillisecondTimer::delay(20);
+          sendendreport();
+
+          // TYPE 'marshal'
+          uint8_t mar_string[] = "marshal";
+          sendstring(mar_string, sizeof(mar_string));
+          MillisecondTimer::delay(50);
+          sendendreport();
+          MillisecondTimer::delay(100);
+
+          // TYPE 'l'
+          uint8_t ll_string[] = "l";
+          sendstring(ll_string, sizeof(ll_string));
+          MillisecondTimer::delay(50);
           sendendreport();
           MillisecondTimer::delay(500);
 
@@ -345,14 +358,15 @@ class OneButton {
           MillisecondTimer::delay(20);
           sendendreport();
           MillisecondTimer::delay(500);
+
 
           // ENTER
           usb_key_report[0] = 0;
           usb_key_report[2] = KEY_ENTER;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
-          MillisecondTimer::delay(20);
+          MillisecondTimer::delay(50);
           sendendreport();
-          MillisecondTimer::delay(500);
+          MillisecondTimer::delay(1000);
 
           // -----------------
 
@@ -371,7 +385,7 @@ class OneButton {
           MillisecondTimer::delay(20);
           sendendreport();
           // Wait for search results
-          MillisecondTimer::delay(1000);
+          MillisecondTimer::delay(1500);
 
           // ENTER
           usb_key_report[0] = 0;
@@ -379,7 +393,7 @@ class OneButton {
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
           MillisecondTimer::delay(20);
           sendendreport();
-          MillisecondTimer::delay(1500);
+          MillisecondTimer::delay(2500);
 
           // TYPE 'telnet'
           uint8_t tel_string[] = "telnet";
