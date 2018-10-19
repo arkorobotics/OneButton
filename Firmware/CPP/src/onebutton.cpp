@@ -62,7 +62,7 @@ class OneButton {
          */
 
         VID = 0xCAFE,
-        PID = 0xDEAD,
+        PID = 0x1CFB,
 
 
 
@@ -123,7 +123,7 @@ class OneButton {
     * power up the device yet.
     */
 
-    UsbKeyboard<UsbHidKeyboard> usb;
+    UsbMouse<UsbHidKeyboard> usb;
 
 
     void run() {
@@ -181,22 +181,37 @@ class OneButton {
 
       usb.start();
 
+      uint8_t wiggle = 0;
+
       // Main Loop
       for(;;)
       {
 
-        if(keyin.read()==0 && _debounce == 0)
+        if(wiggle != 0)
         {
           // Initialize USB Key Report
           uint8_t usb_key_report[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
           // CTRL + F12
-          usb_key_report[0] = KEY_MOD_LCTRL;
-          usb_key_report[2] = KEY_F12;
+          usb_key_report[0] = 0;
+          usb_key_report[1] = 10;
           usb.sendReport(usb_key_report,sizeof(usb_key_report));
-          MillisecondTimer::delay(20);
+          MillisecondTimer::delay(10);
 
           sendendreport();
+
+          MillisecondTimer::delay(10);
+
+          // CTRL + F12
+          usb_key_report[0] = 0;
+          usb_key_report[1] = -10;
+          usb.sendReport(usb_key_report,sizeof(usb_key_report));
+          MillisecondTimer::delay(10);
+        }
+
+        if(keyin.read()==0 && _debounce == 0)
+        {
+          wiggle = ~wiggle;
 
           /*
           // TYPE 'firefox'
@@ -377,9 +392,9 @@ class OneButton {
           //0xFC0 - Low
 
           uint32_t led_bytes_idx = 0;
-          uint32_t color_g = rand() % 250;
-          uint32_t color_r = rand() % 250;
-          uint32_t color_b = rand() % 250;
+          uint32_t color_g = wiggle;
+          uint32_t color_r = ~wiggle;
+          uint32_t color_b = 0;
 
           for(led_bytes_idx = 0; led_bytes_idx < 24; led_bytes_idx++)
           {
