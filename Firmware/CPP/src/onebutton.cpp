@@ -128,6 +128,8 @@ class OneButton {
 
     void run() {
 
+      MillisecondTimer::delay(200);
+
       /*
        * Set up the default values for the member variables
        */
