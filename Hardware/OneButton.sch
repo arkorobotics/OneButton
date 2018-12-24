@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.5.2">
+<eagle version="9.1.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -2356,7 +2356,9 @@ NOTES: THIS PAGE</text>
 2. Set BOOT0 to pull-down
 3. Move DAT_IN to SPI1 MOSI (PA7)
 4. Move Button Pins and Button LED
-5. Add inrush current protection (IC)</text>
+5. Add inrush current protection (IC)
+6. Add 150R between +5V and VCC, apply +5V directly to VDD.
+7. Add 1000uF of capacitance to +5V bus</text>
 </plain>
 <instances>
 <instance part="S1" gate="G$1" x="95.25" y="76.2" smashed="yes">

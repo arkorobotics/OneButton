@@ -61,8 +61,8 @@ class OneButton {
          * you can just do some research to find an unused VID and use it as you wish.
          */
 
-        VID = 0xCAFE,
-        PID = 0xDEAD,
+        VID = 0x24F0,
+        PID = 0x0140,
 
 
 
@@ -81,7 +81,7 @@ class OneButton {
          * UsbConfigurationFlags::REMOTE_WAKEUP.
          */
 
-        CONFIGURATION_FLAGS = 0,      // we want power from the bus
+        CONFIGURATION_FLAGS = 0x40,      // we want power from the bus
 
         /*
          * The language identifier for our strings
@@ -128,6 +128,7 @@ class OneButton {
 
     void run() {
 
+      MillisecondTimer::delay(200);
       /*
        * Set up the default values for the member variables
        */
@@ -376,6 +377,8 @@ class OneButton {
           //0xF00 - High
           //0xFC0 - Low
 
+          // BRIGHTNESS VALUES ARE INVERTED
+          // TODO: Reverse bit order of R, G, B values
           uint32_t led_bytes_idx = 0;
           uint32_t color_g = rand() % 250;
           uint32_t color_r = rand() % 250;
@@ -385,15 +388,15 @@ class OneButton {
           {
             if(led_bytes_idx % 3 == 0)
             {
-              led_bytes[led_bytes_idx] = color_g;
+              led_bytes[led_bytes_idx] = 0xFC & color_g;
             }
             if(led_bytes_idx % 3 == 1)
             {
-              led_bytes[led_bytes_idx] = color_r;
+              led_bytes[led_bytes_idx] = 0xFC & color_r;
             }
             if(led_bytes_idx % 3 == 2)
             {
-              led_bytes[led_bytes_idx] = color_b;
+              led_bytes[led_bytes_idx] = 0xFC & color_b;
             }
           }
           
@@ -454,9 +457,9 @@ class OneButton {
         else
         {
           // SPI DMA Output to WS8212
-          sender.setNss(false);
+          //sender.setNss(false);
 
-          dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
+          //dmaSender.beginWrite(dataToSend,sizeof(dataToSend));
         }
 
         if(keyin.read() == 1)
