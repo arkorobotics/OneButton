@@ -46,6 +46,8 @@ class OneButton {
 
     uint8_t colorsweep = 0;
 
+    uint8_t color_shift = 0;
+
     /*
      * The constants in this structure are used to customize the HID to your
      * requirements.
@@ -116,6 +118,7 @@ class OneButton {
 
     volatile uint8_t _debounce = 0;
 
+
   public:
     
     /*
@@ -128,7 +131,8 @@ class OneButton {
 
     void run() {
 
-      MillisecondTimer::delay(200);
+      MillisecondTimer::delay(1500);
+
       /*
        * Set up the default values for the member variables
        */
@@ -163,7 +167,7 @@ class OneButton {
       ButtonInPort keyin;
       keyin[KEY_IN_PIN].reset();
 
-      MillisecondTimer::delay(1000);
+      //MillisecondTimer::delay(1000);
 
 
 
@@ -380,23 +384,30 @@ class OneButton {
           // BRIGHTNESS VALUES ARE INVERTED
           // TODO: Reverse bit order of R, G, B values
           uint32_t led_bytes_idx = 0;
-          uint32_t color_g = rand() % 250;
-          uint32_t color_r = rand() % 250;
-          uint32_t color_b = rand() % 250;
+
+          color_shift = (color_shift + 8) % 24;
+
+          uint32_t color_g = (0x0000FF << color_shift) & 0xFF;
+          uint32_t color_r = ((0x0000FF << color_shift) & 0xFF00) >> 8;
+          uint32_t color_b = ((0x0000FF << color_shift) & 0xFF0000) >> 16;
+
+          //uint32_t color_g = rand() % 250;
+          //uint32_t color_r = rand() % 250;
+          //uint32_t color_b = rand() % 250;
 
           for(led_bytes_idx = 0; led_bytes_idx < 24; led_bytes_idx++)
           {
             if(led_bytes_idx % 3 == 0)
             {
-              led_bytes[led_bytes_idx] = 0xFC & color_g;
+              led_bytes[led_bytes_idx] = 0xFF & color_g;
             }
             if(led_bytes_idx % 3 == 1)
             {
-              led_bytes[led_bytes_idx] = 0xFC & color_r;
+              led_bytes[led_bytes_idx] = 0xFF & color_r;
             }
             if(led_bytes_idx % 3 == 2)
             {
-              led_bytes[led_bytes_idx] = 0xFC & color_b;
+              led_bytes[led_bytes_idx] = 0xFF & color_b;
             }
           }
           
